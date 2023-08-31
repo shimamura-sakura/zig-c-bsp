@@ -137,10 +137,10 @@ pub const TexInfo = extern struct {
     fTShift: f32,
     iMipTex: u32,
     flags: u32,
-    pub fn calcST(self: Self, vtx: vec3) [2]f32 {
+    pub fn calcST(self: Self, vtx: vec3, w: u32, h: u32) [2]f32 {
         return .{
-            vtx[0] * self.vS[0] + vtx[1] * self.vS[1] + vtx[2] * self.vS[2] + self.fSShift,
-            vtx[0] * self.vT[0] + vtx[1] * self.vT[1] + vtx[2] * self.vT[2] + self.fTShift,
+            (vtx[0] * self.vS[0] + vtx[1] * self.vS[1] + vtx[2] * self.vS[2] + self.fSShift) / @as(f32, @floatFromInt(w)),
+            (vtx[0] * self.vT[0] + vtx[1] * self.vT[1] + vtx[2] * self.vT[2] + self.fTShift) / @as(f32, @floatFromInt(h)),
         };
     }
 };
@@ -209,7 +209,11 @@ pub const Model = extern struct {
     mins: vec3,
     maxs: vec3,
     origin: vec3,
-    iHeadnodes: [4]u32, // 0 - render, 123 - physics
+    /// 0 - render
+    /// 1 - [-16, -16, -36] - [+16, +16, +36] : 32x32x72 standing;
+    /// 2 - [-32, -32, -32] - [+32, +32, +32] : 64x64x64 big;
+    /// 3 - [-16, -16, -18] - [+16, +16, +18] : 32x32x36 crouched;
+    iHeadnodes: [4]i32,
     nVisLeafs: u32,
     iFace0: u32,
     nFaces: u32,
