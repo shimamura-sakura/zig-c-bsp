@@ -11,3 +11,14 @@ Simple renderer for GoldSrc BSP File.
 ## Run
 
 ./a.out some_map.bsp
+
+## Control
+
+Mouse - view  
+WSAD - move  
+Shift - duck (Crouch)  
+Space - jump  
+Mouse Wheel Up - duck  
+Mouse Wheel Down - jump  
+V - noclip  
+P - print position  
